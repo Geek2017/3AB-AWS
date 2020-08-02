@@ -223,10 +223,10 @@ angular.module('newApp').controller('CustomCtrl', function($scope) {
 
                         //         }
                         //     });
-                        // setTimeout(function() {
-                        //     x.className = x.className.replace("show", "");
-                        //     window.location.href = "#native";
-                        // }, 3000);
+                        setTimeout(function() {
+                            x.className = x.className.replace("show", "");
+                            window.location.href = "#native";
+                        }, 3000);
                         localStorage.setItem("botpath", folder_name + "/assets/ads/bot/index.html");
                         localStorage.setItem("humanpath", folder_name + "/assets/ads/human/index.html");
                         localStorage.setItem("folder_name", folder_name);
