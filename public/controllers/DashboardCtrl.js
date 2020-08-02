@@ -6,106 +6,120 @@ angular.module('newApp').controller('DashboardCtrl', function($scope) {
 
         var register = localStorage.getItem("register");
 
+        var role = sessionStorage.getItem("role");
+
         var ref = firebase.database().ref("datasets/users");
 
         var userVerify = firebase.auth().currentUser;
 
-        ref.orderByChild("role").once("value")
-            .then(function(snapshot) {
-                var exist = snapshot.exists();
-                var role = snapshot.child(userVerify.uid).child("role").val();
-                var UID = firebase.auth().currentUser.uid;
-                console.log(role)
-                    //console.log(UID);
-                    //console.log(snapshot.val());   
-                    //console.log(role);
-                if (role == 'ordinary') {
-                    // $("#builder1").show();
-                    // $("#builder2").show();
-                    // $("#logs").hide();
-                    // $("#settings").hide();
-                } else if (role == 'super') {
-                    // $("#builder1").show();
-                    // $("#builder2").show();
-                    $("#AI1").show();
-                    $("#AI2").show();
-                    $("#AI3").show();
-                    $("#events").show();
-                    // $("#settings").show();
-                    // $("#settings").hide();
-                } else if (role == 'admin') {
-                    // $("#builder1").show();
-                    // $("#builder2").show();
-                    $("#AI1").show();
-                    $("#AI2").show();
-                    $("#AI3").show();
-                    $("#events").show();
-                }
+        if(role == 1){
+                    // $("#AI1").show();
+                    // $("#AI2").show();
+                    // $("#AI3").show();
+                    // $("#events").show();
+        } else if(role == 2){
+            $("#AI1").show();
+            $("#AI2").show();
+            $("#AI3").show();
+            $("#events").show();
+        }
 
-            });
+        // ref.orderByChild("role").once("value")
+        //     .then(function(snapshot) {
+        //         var exist = snapshot.exists();
+        //         var role = snapshot.child(userVerify.uid).child("role").val();
+        //         var UID = firebase.auth().currentUser.uid;
+        //         console.log(role)
+        //             //console.log(UID);
+        //             //console.log(snapshot.val());   
+        //             //console.log(role);
+        //         if (role == 'ordinary') {
+        //             // $("#builder1").show();
+        //             // $("#builder2").show();
+        //             // $("#logs").hide();
+        //             // $("#settings").hide();
+        //         } else if (role == 'super') {
+        //             // $("#builder1").show();
+        //             // $("#builder2").show();
+        //             $("#AI1").show();
+        //             $("#AI2").show();
+        //             $("#AI3").show();
+        //             $("#events").show();
+        //             // $("#settings").show();
+        //             // $("#settings").hide();
+        //         } else if (role == 'admin') {
+        //             // $("#builder1").show();
+        //             // $("#builder2").show();
+        //             $("#AI1").show();
+        //             $("#AI2").show();
+        //             $("#AI3").show();
+        //             $("#events").show();
+        //         }
+
+        //     });
 
 
         // $('#botcliks').text(localStorage.getItem('botcliks'));
         // $('#humancliks').text(localStorage.getItem('humancliks'));
-        if (register == "custom") {
-            var ref2 = firebase.database().ref("datasets/users");
-            var current = firebase.auth().currentUser;
-            var userId = current.uid;
+        // if (register == "custom") {
+        //     var ref2 = firebase.database().ref("datasets/users");
+        //     var current = firebase.auth().currentUser;
+        //     var userId = current.uid;
 
-            ref2.once("value")
-                .then(function(snapshot) {
-                    //check if exist
-                    var r = snapshot.child(userId).exists();
-                    if (r !== true) {
-                        // console.log("Dont Exists");
-
-
-                        // console.log(userId);
-                        ref2.child(userId).set({
-                                username: username,
-                                // username: current.displayName,
-                                photoURL: current.photoURL,
-                                email: current.email,
-                                role: "ordinary"
-                            })
-                            .then(function(ref) {
-                                console.log('Added to database');
-                            });
-                    } else {
-                        // console.log("Exists");
-                    }
-
-                });
-        } else if (register == "gmail") {
-            var ref2 = firebase.database().ref("datasets/users");
-            var current = firebase.auth().currentUser;
-            var userId = current.uid;
-
-            ref2.once("value")
-                .then(function(snapshot) {
-                    //check if exist
-                    var r = snapshot.child(userId).exists();
-                    if (r !== true) {
-                        // console.log("Dont Exists");
+        //     ref2.once("value")
+        //         .then(function(snapshot) {
+        //             //check if exist
+        //             var r = snapshot.child(userId).exists();
+        //             if (r !== true) {
+        //                 // console.log("Dont Exists");
 
 
-                        // console.log(userId);
-                        ref2.child(userId).set({
-                                // username: username,
-                                username: current.displayName,
-                                photoURL: current.photoURL,
-                                email: current.email,
-                                role: "ordinary"
-                            })
-                            .then(function(ref) {
-                                console.log('Added to database');
-                            });
-                    } else {
-                        // console.log("Exists");
-                    }
+        //                 // console.log(userId);
+        //                 ref2.child(userId).set({
+        //                         username: username,
+        //                         // username: current.displayName,
+        //                         photoURL: current.photoURL,
+        //                         email: current.email,
+        //                         role: "ordinary"
+        //                     })
+        //                     .then(function(ref) {
+        //                         console.log('Added to database');
+        //                     });
+        //             } else {
+        //                 // console.log("Exists");
+        //             }
 
-                });
-        }
+        //         });
+        // } else if (register == "gmail") {
+        //     var ref2 = firebase.database().ref("datasets/users");
+        //     var current = firebase.auth().currentUser;
+        //     var userId = current.uid;
+
+        //     ref2.once("value")
+        //         .then(function(snapshot) {
+        //             //check if exist
+        //             var r = snapshot.child(userId).exists();
+        //             if (r !== true) {
+        //                 // console.log("Dont Exists");
+
+
+        //                 // console.log(userId);
+        //                 ref2.child(userId).set({
+        //                         // username: username,
+        //                         username: current.displayName,
+        //                         photoURL: current.photoURL,
+        //                         email: current.email,
+        //                         role: "ordinary"
+        //                     })
+        //                     .then(function(ref) {
+        //                         console.log('Added to database');
+        //                     });
+        //             } else {
+        //                 // console.log("Exists");
+        //             }
+
+        //         });
+        // }
 
 
 

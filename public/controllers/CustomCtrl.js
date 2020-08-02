@@ -97,52 +97,136 @@ angular.module('newApp').controller('CustomCtrl', function($scope) {
                         // $('#confirmModal').modal('show');
                         x.className = "show";
                         var currentUrl = window.location.hostname;
+                        var newCount = 1, updateCount;
+
+                        var settings = {
+                            "url": "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/adcounts/" + currentUrl,
+                            "method": "GET",
+                            "timeout": 0,
+                          };
+                          $.ajax(settings).done(function (response) {
+                              if(response.domain){
+                                  console.log(response.count);
+                                  updateCount = response.count;
+                                  updateCount++;
+                                  updateDomain();
+
+                                  // Base64.decode(response.password);
+                              } else {
+                                 newDomain();
+                              }
+                            
+                          });
+                          
+                          function updateDomain(){
+                                    var myData = JSON.stringify({
+                        
+                                    "count": updateCount,
+                                    "domain": currentUrl
+                                    // "username": $('#user').val(),
+                                    // "password": Base64.encode(pwd.value),
+                                    // "role": "ordinary"
+                        
+                                });
+                                console.log(myData);
+                                $.ajax({
+                                    type: "POST",
+                                    dataType: "json",
+                                    url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/adcounts/{domain}",
+                                    // url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/users/{username}",
+                                    data: myData,
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    success: function(data) {
+                                        console.log(data);
+                                    },
+                                    error: function(error) {
+                                        console.log(error);
+                                    }
+                                });
+                          }
+
+                          function newDomain(){
+                            var myData = JSON.stringify({
+                
+                            "count": newCount,
+                            "domain": currentUrl
+                            // "username": $('#user').val(),
+                            // "password": Base64.encode(pwd.value),
+                            // "role": "ordinary"
+                
+                        });
+                        console.log(myData);
+                        $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/adcounts/{domain}",
+                            // url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/users/{username}",
+                            data: myData,
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            success: function(data) {
+                                console.log(data);
+                            },
+                            error: function(error) {
+                                console.log(error);
+                            }
+                        });
+                  }
+                          
+
+
+                    
+                            
+                        
                         // console.log(currentUrl);
-                        var ref = firebase.database().ref("/datasets/adscount/");
+                        // var ref = firebase.database().ref("/datasets/adscount/");
 
-                        ref.orderByChild("domain").equalTo(currentUrl).once("value")
-                            .then(function(snapshot) {
+                        // ref.orderByChild("domain").equalTo(currentUrl).once("value")
+                        //     .then(function(snapshot) {
 
-                                var exist = snapshot.exists();
-                                var val = snapshot.val();
-                                // var countNext = snapshot.val();
-
-
-                                if (!exist) {
-                                    ref.push({
-                                            domain: currentUrl,
-                                            count: 1
-                                        })
-                                        .then(function(data) {
-                                            // console.log(data.key);
-                                            ref.child(data.key).update({
-                                                key: data.key
-                                            })
-                                        });
-                                } else {
+                        //         var exist = snapshot.exists();
+                        //         var val = snapshot.val();
+                        //         // var countNext = snapshot.val();
 
 
-                                    setTimeout(function() {
-                                        var valArray = Object.values(val);
+                        //         if (!exist) {
+                        //             ref.push({
+                        //                     domain: currentUrl,
+                        //                     count: 1
+                        //                 })
+                        //                 .then(function(data) {
+                        //                     // console.log(data.key);
+                        //                     ref.child(data.key).update({
+                        //                         key: data.key
+                        //                     })
+                        //                 });
+                        //         } else {
 
-                                        var countNext = valArray[0].count + 1;
-                                        var key = valArray[0].key;
 
-                                        // console.log(valArray[0].key);
-                                        // console.log(countNext);
-                                        ref.child(key).update({
-                                            count: countNext
-                                        }).then(function(data) {
-                                            console.log('Updated database!');
-                                        });
-                                    }, 3000);
+                        //             setTimeout(function() {
+                        //                 var valArray = Object.values(val);
 
-                                }
-                            });
-                        setTimeout(function() {
-                            x.className = x.className.replace("show", "");
-                            window.location.href = "#native";
-                        }, 3000);
+                        //                 var countNext = valArray[0].count + 1;
+                        //                 var key = valArray[0].key;
+
+                        //                 // console.log(valArray[0].key);
+                        //                 // console.log(countNext);
+                        //                 ref.child(key).update({
+                        //                     count: countNext
+                        //                 }).then(function(data) {
+                        //                     console.log('Updated database!');
+                        //                 });
+                        //             }, 3000);
+
+                        //         }
+                        //     });
+                        // setTimeout(function() {
+                        //     x.className = x.className.replace("show", "");
+                        //     window.location.href = "#native";
+                        // }, 3000);
                         localStorage.setItem("botpath", folder_name + "/assets/ads/bot/index.html");
                         localStorage.setItem("humanpath", folder_name + "/assets/ads/human/index.html");
                         localStorage.setItem("folder_name", folder_name);
@@ -187,44 +271,46 @@ angular.module('newApp').controller('CustomCtrl', function($scope) {
 
                         var currentUrl = window.location.hostname;
                         var modal = document.getElementById('pickModal');
+
+                        
                         // console.log(currentUrl);
-                        var ref = firebase.database().ref("/datasets/adscount/");
+                        // var ref = firebase.database().ref("/datasets/adscount/");
 
-                        ref.orderByChild("domain").equalTo(currentUrl).once("value")
-                            .then(function(snapshot) {
+                        // ref.orderByChild("domain").equalTo(currentUrl).once("value")
+                        //     .then(function(snapshot) {
 
-                                var exist = snapshot.exists();
-                                var val = snapshot.val();
-                                // var countNext = snapshot.val();
+                        //         var exist = snapshot.exists();
+                        //         var val = snapshot.val();
+                        //         // var countNext = snapshot.val();
 
 
-                                if (!exist) {
-                                    ref.push({
-                                            domain: currentUrl,
-                                            count: 1
-                                        })
-                                        .then(function(data) {
-                                            // console.log(data.key);
-                                            ref.child(data.key).update({
-                                                key: data.key
-                                            })
-                                        });
-                                } else {
+                        //         if (!exist) {
+                        //             ref.push({
+                        //                     domain: currentUrl,
+                        //                     count: 1
+                        //                 })
+                        //                 .then(function(data) {
+                        //                     // console.log(data.key);
+                        //                     ref.child(data.key).update({
+                        //                         key: data.key
+                        //                     })
+                        //                 });
+                        //         } else {
 
-                                    var valArray = Object.values(val);
+                        //             var valArray = Object.values(val);
 
-                                    var countNext = valArray[0].count + 1;
-                                    var key = valArray[0].key;
+                        //             var countNext = valArray[0].count + 1;
+                        //             var key = valArray[0].key;
 
-                                    // console.log(valArray[0].key);
-                                    // console.log(countNext);
-                                    ref.child(key).update({
-                                        count: countNext
-                                    }).then(function(data) {
-                                        console.log('Updated database!');
-                                    });
-                                }
-                            });
+                        //             // console.log(valArray[0].key);
+                        //             // console.log(countNext);
+                        //             ref.child(key).update({
+                        //                 count: countNext
+                        //             }).then(function(data) {
+                        //                 console.log('Updated database!');
+                        //             });
+                        //         }
+                        //     });
                         $('#botPathName2').text("Choose file");
                         $('#humanPathName2').text("Choose file");
                         modal.style.display = "block";
@@ -371,6 +457,8 @@ angular.module('newApp').controller('CustomCtrl', function($scope) {
         var botURLPathText = $('#botURLPathText').val();
         var humanURLPathText = $('#humanURLPathText').val();
         if (botURLPathText != '' && humanURLPathText != '') {
+
+            
             $.ajax({
                 url: "dataPath2.php",
                 method: "POST",
@@ -380,6 +468,85 @@ angular.module('newApp').controller('CustomCtrl', function($scope) {
                     humanURLPathText: humanURLPathText
                 },
                 success: function(data) {
+                    var currentUrl = window.location.hostname;
+                    var newCount = 1, updateCount;
+
+                        var settings = {
+                            "url": "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/adcounts/" + currentUrl,
+                            "method": "GET",
+                            "timeout": 0,
+                          };
+                          $.ajax(settings).done(function (response) {
+                              if(response.domain){
+                                  console.log(response.count);
+                                  updateCount = response.count;
+                                  updateCount++;
+                                  updateDomain();
+
+                                  // Base64.decode(response.password);
+                              } else {
+                                 newDomain();
+                              }
+                            
+                          });
+                          
+                          function updateDomain(){
+                                    var myData = JSON.stringify({
+                        
+                                    "count": updateCount,
+                                    "domain": currentUrl
+                                    // "username": $('#user').val(),
+                                    // "password": Base64.encode(pwd.value),
+                                    // "role": "ordinary"
+                        
+                                });
+                                console.log(myData);
+                                $.ajax({
+                                    type: "POST",
+                                    dataType: "json",
+                                    url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/adcounts/{domain}",
+                                    // url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/users/{username}",
+                                    data: myData,
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    success: function(data) {
+                                        console.log(data);
+                                    },
+                                    error: function(error) {
+                                        console.log(error);
+                                    }
+                                });
+                          }
+
+                          function newDomain(){
+                            var myData = JSON.stringify({
+                
+                            "count": newCount,
+                            "domain": currentUrl
+                            // "username": $('#user').val(),
+                            // "password": Base64.encode(pwd.value),
+                            // "role": "ordinary"
+                
+                        });
+                        console.log(myData);
+                        $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/adcounts/{domain}",
+                            // url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/users/{username}",
+                            data: myData,
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            success: function(data) {
+                                console.log(data);
+                            },
+                            error: function(error) {
+                                console.log(error);
+                            }
+                        });
+                  }
 
                     console.log(data);
 
@@ -417,6 +584,87 @@ angular.module('newApp').controller('CustomCtrl', function($scope) {
                     humanFileName: humanFileName
                 },
                 success: function(data) {
+                    var currentUrl = window.location.hostname;
+                    var newCount = 1, updateCount;
+
+                        var settings = {
+                            "url": "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/adcounts/" + currentUrl,
+                            "method": "GET",
+                            "timeout": 0,
+                          };
+                          $.ajax(settings).done(function (response) {
+                              if(response.domain){
+                                  console.log(response.count);
+                                  updateCount = response.count;
+                                  updateCount++;
+                                  updateDomain();
+
+                                  // Base64.decode(response.password);
+                              } else {
+                                 newDomain();
+                              }
+                            
+                          });
+                          
+                          function updateDomain(){
+                                    var myData = JSON.stringify({
+                        
+                                    "count": updateCount,
+                                    "domain": currentUrl
+                                    // "username": $('#user').val(),
+                                    // "password": Base64.encode(pwd.value),
+                                    // "role": "ordinary"
+                        
+                                });
+                                console.log(myData);
+                                $.ajax({
+                                    type: "POST",
+                                    dataType: "json",
+                                    url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/adcounts/{domain}",
+                                    // url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/users/{username}",
+                                    data: myData,
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    success: function(data) {
+                                        console.log(data);
+                                    },
+                                    error: function(error) {
+                                        console.log(error);
+                                    }
+                                });
+                          }
+
+                          function newDomain(){
+                            var myData = JSON.stringify({
+                
+                            "count": newCount,
+                            "domain": currentUrl
+                            // "username": $('#user').val(),
+                            // "password": Base64.encode(pwd.value),
+                            // "role": "ordinary"
+                
+                        });
+                        console.log(myData);
+                        $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/adcounts/{domain}",
+                            // url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/users/{username}",
+                            data: myData,
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            success: function(data) {
+                                console.log(data);
+                            },
+                            error: function(error) {
+                                console.log(error);
+                            }
+                        });
+                  }
+
+
                     console.log(data);
                     var bothSaved = document.getElementById("snackbar6");
                     bothSaved.className = "show";

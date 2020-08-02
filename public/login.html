@@ -77,22 +77,21 @@
                         </div>
                         <!-- /.col -->
                         <div class="col-4">
-                            <button type="button" class="btn btn-primary btn-block" id="btnSignin" onclick="signin()">Sign In</button>
+                            <button type="button" class="btn btn-primary btn-block" id="signIn">Sign In</button>
                         </div>
                         <!-- /.col -->
                     </div>
                 </form>
-
+<!-- 
                 <div class="social-auth-links text-center mb-3">
                     <p>- OR -</p>
-                    <!-- <a href="#" class="btn btn-block btn-primary">
-                        <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-                    </a> -->
                     <a href="#" class="btn btn-block btn-danger" onclick="googleSignin()">
                         <i class="fab fa-google-plus mr-2"></i> Sign up using Google
                     </a>
-                </div>
+                </div> -->
                 <!-- /.social-auth-links -->
+
+                <br>
 
                 <p class="mb-1">
                     <a href="#" id="btnToForgot">I forgot my password</a>
@@ -119,14 +118,14 @@
                 <br>
 
                 <form action="../../index.html" method="post">
-                    <div class="input-group mb-3">
+                    <!-- <div class="input-group mb-3">
                         <input type="text" class="form-control" id="username" placeholder="Username">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-user"></span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="input-group mb-3">
                         <input type="email" class="form-control" id="email" placeholder="Email">
                         <div class="input-group-append">
@@ -162,22 +161,20 @@
                         </div>
                         <!-- /.col -->
                         <div class="col-4">
-                            <button type="button" class="btn btn-primary btn-block" id="btnRegister" onclick="register()">Register</button>
+                            <button type="button" class="btn btn-primary btn-block" id="save">Register</button>
                         </div>
                         <!-- /.col -->
                     </div>
                 </form>
 
-                <div class="social-auth-links text-center">
+                <!-- <div class="social-auth-links text-center">
                     <p>- OR -</p>
-                    <!-- <a href="#" class="btn btn-block btn-primary">
-                        <i class="fab fa-facebook mr-2"></i> Sign up using Facebook
-                    </a> -->
-                    <!-- <button class="btn btn-block btn-danger fab fa-google-plus mr-2" onclick="googleSignin()">Google Signin</button> -->
                     <a href="#" class="btn btn-block btn-danger" onclick="googleSignin2()">
                         <i class="fab fa-google-plus mr-2"></i> Sign up using Google+
                     </a>
-                </div>
+                </div> -->
+
+                <br>
 
                 <a href="#" class="text-center" id="btnToLogin">I already have a membership</a>
             </div>
@@ -238,34 +235,262 @@
             $('#loginStyle').hide();
             $('#forgotStyle').hide();
             $('#registerStyle').show();
-            console.log('To Register');
+            // console.log('To Register');
         });
         $('#btnToRegister2').click(function() {
             $('#loginStyle').hide();
             $('#forgotStyle').hide();
             $('#registerStyle').show();
-            console.log('To Register');
+            // console.log('To Register');
         });
 
         $('#btnToLogin').click(function() {
             $('#registerStyle').hide();
             $('#forgotStyle').hide();
             $('#loginStyle').show();
-            console.log('To Login');
+            // console.log('To Login');
         });
         $('#btnToLogin2').click(function() {
             $('#registerStyle').hide();
             $('#forgotStyle').hide();
             $('#loginStyle').show();
-            console.log('To Login');
+            // console.log('To Login');
         });
 
         $('#btnToForgot').click(function() {
             $('#registerStyle').hide();
             $('#loginStyle').hide();
             $('#forgotStyle').show();
-            console.log('To Forgot');
+            // console.log('To Forgot');
         });
+
+        var Base64 = {
+
+
+            _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+
+
+            encode: function(pwd) {
+                var output = "";
+                var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+                var i = 0;
+
+                pwd = Base64._utf8_encode(pwd);
+
+                while (i < pwd.length) {
+
+                    chr1 = pwd.charCodeAt(i++);
+                    chr2 = pwd.charCodeAt(i++);
+                    chr3 = pwd.charCodeAt(i++);
+
+                    enc1 = chr1 >> 2;
+                    enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+                    enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+                    enc4 = chr3 & 63;
+
+                    if (isNaN(chr2)) {
+                        enc3 = enc4 = 64;
+                    } else if (isNaN(chr3)) {
+                        enc4 = 64;
+                    }
+
+                    output = output + this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) + this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+
+                }
+
+                return output;
+            },
+
+
+            decode: function(pwd) {
+                var output = "";
+                var chr1, chr2, chr3;
+                var enc1, enc2, enc3, enc4;
+                var i = 0;
+
+                pwd = pwd.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+
+                while (i < pwd.length) {
+
+                    enc1 = this._keyStr.indexOf(pwd.charAt(i++));
+                    enc2 = this._keyStr.indexOf(pwd.charAt(i++));
+                    enc3 = this._keyStr.indexOf(pwd.charAt(i++));
+                    enc4 = this._keyStr.indexOf(pwd.charAt(i++));
+
+                    chr1 = (enc1 << 2) | (enc2 >> 4);
+                    chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+                    chr3 = ((enc3 & 3) << 6) | enc4;
+
+                    output = output + String.fromCharCode(chr1);
+
+                    if (enc3 != 64) {
+                        output = output + String.fromCharCode(chr2);
+                    }
+                    if (enc4 != 64) {
+                        output = output + String.fromCharCode(chr3);
+                    }
+
+                }
+
+                output = Base64._utf8_decode(output);
+
+                return output;
+
+            },
+
+            _utf8_encode: function(string) {
+                string = string.replace(/\r\n/g, "\n");
+                var utftext = "";
+
+                for (var n = 0; n < string.length; n++) {
+
+                    var c = string.charCodeAt(n);
+
+                    if (c < 128) {
+                        utftext += String.fromCharCode(c);
+                    } else if ((c > 127) && (c < 2048)) {
+                        utftext += String.fromCharCode((c >> 6) | 192);
+                        utftext += String.fromCharCode((c & 63) | 128);
+                    } else {
+                        utftext += String.fromCharCode((c >> 12) | 224);
+                        utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                        utftext += String.fromCharCode((c & 63) | 128);
+                    }
+
+                }
+
+                return utftext;
+            },
+
+            _utf8_decode: function(utftext) {
+                var string = "";
+                var i = 0;
+                var c = c1 = c2 = 0;
+
+                while (i < utftext.length) {
+
+                    c = utftext.charCodeAt(i);
+
+                    if (c < 128) {
+                        string += String.fromCharCode(c);
+                        i++;
+                    } else if ((c > 191) && (c < 224)) {
+                        c2 = utftext.charCodeAt(i + 1);
+                        string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                        i += 2;
+                    } else {
+                        c2 = utftext.charCodeAt(i + 1);
+                        c3 = utftext.charCodeAt(i + 2);
+                        string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                        i += 3;
+                    }
+
+                }
+
+                return string;
+            }
+
+            }
+
+            var encode = document.getElementById('encode'),
+            decode = document.getElementById('decode'),
+            save = document.getElementById('save'),
+            signIn = document.getElementById('signIn'),
+            output = document.getElementById('output'),
+            pwd = document.getElementById('password');
+
+            // encode.onclick = function() {
+            // output.innerHTML = Base64.encode(pwd.value);
+            // }
+
+            // decode.onclick = function() {
+            // var $str = output.innerHTML;
+            // output.innerHTML = Base64.decode($str);
+            // }
+
+            save.onclick = function() {
+            ajaxsave()
+            }
+
+            signIn.onclick = function() {
+            login()
+            }
+
+            function ajaxsave() {
+
+                var myData = JSON.stringify({
+
+                //     // "count": "13",
+                //     // "domain": "www.done.com"
+                    "username": $('#email').val(),
+                    "password": Base64.encode(pwd.value),
+                    "role": ""
+
+                });
+                console.log(myData);
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    // url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/adcounts/{domain}",
+                    url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/users/{username}",
+                    data: myData,
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        sessionStorage.setItem("state", 1);
+                        $('#registerStyle').hide();
+                        $('#forgotStyle').hide();
+                        $('#loginStyle').show();
+                        // window.location.href = './index.html';
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+                }
+
+
+                function login() {
+
+                    const username = $('#emailSignIn').val();
+
+                    var settings = {
+                    "url": "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/users/" + username,
+                    "method": "GET",
+                    "timeout": 0,
+                    };
+                    $.ajax(settings).done(function (response) {
+                    if(response.username && response.password && response.role){
+                    // console.log(Base64.decode(response.password));
+                    var lsrole = 0;
+                    var decodedPwd = Base64.decode(response.password);
+                    var role = response.role;
+                    var signInPwd = $('#passwordSignIn').val();
+                    console.log(role);
+                    if(role == "ordinary"){
+                        lsrole = 1;
+                    } else if(role == "admin"){
+                        lsrole = 2;
+                    }
+                    if (signInPwd == decodedPwd){
+                        sessionStorage.setItem("state", 1);
+                        sessionStorage.setItem("role", lsrole);
+                        console.log("You're in!");
+                        window.location.href = './index.html';
+
+                    } else {
+                        document.getElementById("messages").innerHTML = "Your password is incorrect!";
+                    }
+                    } else if(response.username && response.password && !response.role){
+                        document.getElementById("messages").innerHTML = "Kindly contact the administrator for your authorization";
+                    }else if(!response.username && !response.password && !response.role) {
+                        document.getElementById("messages").innerHTML = "Your account is not registered";
+                        }
+
+                    });
+                }
 
         function register() {
             var username = $('#username').val()
@@ -274,6 +499,8 @@
 
             localStorage.setItem("username", username);
             localStorage.setItem("register", "custom");
+
+
 
             firebase.auth().createUserWithEmailAndPassword(email, password)
                 .then(function(user) {

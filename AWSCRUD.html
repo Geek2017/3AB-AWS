@@ -170,31 +170,49 @@
 
     function ajaxsave() {
 
-        var myData = JSON.stringify({
+        const username = $('#user').val();
 
-            // "count": "13",
-            // "domain": "www.done.com"
-            "username": $('#user').val(),
-            "password": Base64.encode(pwd.value)
+        var settings = {
+  "url": "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/users/" + username,
+  "method": "GET",
+  "timeout": 0,
+};
+$.ajax(settings).done(function (response) {
+    if(response.username && response.password && response.role){
+        console.log(Base64.decode(response.password));
+        // Base64.decode(response.password);
+    } else {
+        console.log("Error");
+    }
+  
+});
 
-        });
-        console.log(myData);
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            // url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/adcounts/{domain}",
-            url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/users/{username}",
-            data: myData,
-            headers: {
-                "Content-Type": "application/json"
-            },
-            success: function(data) {
-                console.log(data);
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        });
+        // var myData = JSON.stringify({
+
+        //     // "count": "13",
+        //     // "domain": "www.done.com"
+        //     "username": $('#user').val(),
+        //     // "password": Base64.encode(pwd.value),
+        //     // "role": "ordinary"
+
+        // });
+        // console.log(myData);
+        // $.ajax({
+        //     type: "POST",
+        //     dataType: "json",
+        //     // url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/adcounts/{domain}",
+        //     url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/users/{username}",
+        //     data: myData,
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     },
+        //     success: function(data) {
+        //         console.log(data);
+        //     },
+        //     error: function(error) {
+        //         console.log(error);
+        //     }
+        // });
     }
 </script>
 
