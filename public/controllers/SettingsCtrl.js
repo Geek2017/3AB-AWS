@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('newApp').controller('SettingsCtrl', function($firebaseArray, $scope) {
+angular.module('newApp').controller('SettingsCtrl', function($scope) {
 
     // console.log("Settings");
 
@@ -25,24 +25,24 @@ angular.module('newApp').controller('SettingsCtrl', function($firebaseArray, $sc
 
     $scope.clickedUser = {};
 
-    $scope.data = $firebaseArray(ref);
-    ref.once('value', function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
-            // var childKey = childSnapshot.key();
-            var childData = childSnapshot.val();
-            // $scope.data = childSnapshot.val();
-            // console.log($scope.data);
+    // $scope.data = $firebaseArray(ref);
+    // ref.once('value', function(snapshot) {
+    //     snapshot.forEach(function(childSnapshot) {
+    //         // var childKey = childSnapshot.key();
+    //         var childData = childSnapshot.val();
+    //         // $scope.data = childSnapshot.val();
+    //         // console.log($scope.data);
 
-            username = childSnapshot.child('username').val();
-            // fullname = childSnapshot.child('fullname').val();
-            // address = childSnapshot.child('address').val();
-            // country = childSnapshot.child('country').val();
-            // number = childSnapshot.child('number').val();
-            email = childSnapshot.child('email').val();
-            role = childSnapshot.child('role').val();
+    //         username = childSnapshot.child('username').val();
+    //         // fullname = childSnapshot.child('fullname').val();
+    //         // address = childSnapshot.child('address').val();
+    //         // country = childSnapshot.child('country').val();
+    //         // number = childSnapshot.child('number').val();
+    //         email = childSnapshot.child('email').val();
+    //         role = childSnapshot.child('role').val();
 
-        })
-    });
+    //     })
+    // });
 
     $scope.selectUser = function(users) {
         // console.log(users);

@@ -1,6 +1,6 @@
 // Application Modules and Routing
 angular
-    .module('newApp', ['ngRoute', 'firebase'])
+    .module('newApp', ['ngRoute'])
     .config(function($routeProvider) {
         $routeProvider
             .when('/', {

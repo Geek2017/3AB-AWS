@@ -52,8 +52,8 @@
     <!-- AngularJS -->
     <script src="./assets/libraries/AngularJS/angular.js"></script>
     <script src="./assets/libraries/AngularJS/angular-route.js"></script>
-    <script src="./bower_components/firebase/firebase.js"></script>
-    <script src="./bower_components/angularfire/dist/angularfire.js"></script>
+    <!-- <script src="./bower_components/firebase/firebase.js"></script> -->
+    <!-- <script src="./bower_components/angularfire/dist/angularfire.js"></script> -->
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
     <script>
@@ -69,10 +69,12 @@
 
         if(sessionStorage.getItem('state') == 1){
             if(sessionStorage.getItem('role') == 1){
-                $("#ai").show();
-                $("#logs").show();
-                $("#settings").show();
+                // console.log("1");
+                $("#ai").hide();
+                $("#logs").hide();
+                $("#settings").hide();
             } else if(sessionStorage.getItem('role') == 2){
+                // console.log("2");
                 $("#ai").show();
                 $("#logs").show();
                 $("#settings").show();
@@ -261,7 +263,7 @@
 
                             </ul>
                         </li>
-                        <li style="display: none;" class="nav-item has-treeview" id="ai">
+                        <li style="display: block;" class="nav-item has-treeview" id="ai">
                             <a class="nav-link">
                                 <i class="nav-icon fas fa-fingerprint"></i>
                                 <p>
@@ -294,7 +296,7 @@
 
                             </ul>
                         </li>
-                        <li style="display: none;" class="nav-item has-treeview" id="logs">
+                        <li style="display: block;" class="nav-item has-treeview" id="logs">
                             <a href="#/eventslog" class="nav-link">
                                 <i class="nav-icon fas fa-clipboard-list"></i>
                                 <p>
@@ -302,7 +304,7 @@
                                 </p>
                             </a>
                         </li>
-                        <li style="display: none;" class="nav-item" id="settings">
+                        <li style="display: block;" class="nav-item" id="settings">
                             <a href="#/settings" class="nav-link">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
