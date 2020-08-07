@@ -34,6 +34,15 @@
 
         firebase.initializeApp(config);
     </script>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2.3.2/dist/email.min.js"></script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init("user_W6eirxGmsvTpc0TFJg2LI");
+   })();
+</script>
 </head>
 
 <body class="hold-transition login-page">
@@ -47,6 +56,7 @@
                 <p class="login-box-msg">Sign in to start your session</p>
 
                 <div class="text-danger wrapper text-center" id="messages"></div>
+                <div class="text-success wrapper text-center" id="success"></div>
                 <br>
 
                 <form action="./index3.html" method="post">
@@ -115,6 +125,7 @@
                 <p class="login-box-msg">Register a new membership</p>
 
                 <div class="text-danger wrapper text-center" id="messages2"></div>
+                <div class="text-success wrapper text-center" id="success2"></div>
                 <br>
 
                 <form action="../../index.html" method="post">
@@ -185,7 +196,7 @@
 
     <div class="login-box" id="forgotStyle" style="display: none;">
         <div class="login-logo">
-            <a href="../../index2.html"><b>Admin</b>LTE</a>
+            <a href="../../index2.html"><b>Verko</b>Digital Mktg.</a>
         </div>
         <!-- /.login-logo -->
         <div class="card">
@@ -193,6 +204,7 @@
                 <p class="login-box-msg">You forgot your password? Here you can easily retrieve a new password.</p>
 
                 <div class="text-danger wrapper text-center" id="messages3"></div>
+                <div class="text-success wrapper text-center" id="success3"></div>
                 <br>
 
                 <form action="" method="post">
@@ -218,6 +230,66 @@
                 <p class="mb-0">
                     <a href="#" class="text-center" id="btnToRegister2">Register a new membership</a>
                 </p>
+            </div>
+            <!-- /.login-card-body -->
+        </div>
+    </div>
+
+    <div class="login-box" id="changePass" style="display: none;">
+        <div class="login-logo">
+            <a href="../../index2.html"><b>Verko</b>Digital Mktg.</a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">Change your password here</p>
+
+                <div class="text-danger wrapper text-center" id="messages4"></div>
+                <div class="text-success wrapper text-center" id="success4"></div>
+                <br>
+
+                <form action="" method="post">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="reqPassword" placeholder="Requested password">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" id="newPassword" placeholder="New Password">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <button type="button" class="btn btn-primary btn-block" onclick="changePass()">Change</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+
+                <!-- <p class="mt-3 mb-1">
+                    <a href="#" id="btnToLogin2">Login</a>
+                </p>
+                <p class="mb-0">
+                    <a href="#" class="text-center" id="btnToRegister2">Register a new membership</a>
+                </p> -->
             </div>
             <!-- /.login-card-body -->
         </div>
@@ -440,9 +512,13 @@
                     success: function(data) {
                         console.log(data);
                         sessionStorage.setItem("state", 1);
+                        document.getElementById("success2").innerHTML = "Success, Redirecting to login. . .";
+                        setTimeout(function(){ 
                         $('#registerStyle').hide();
                         $('#forgotStyle').hide();
                         $('#loginStyle').show();
+                        },3000);
+                        
                         // window.location.href = './index.html';
                     },
                     error: function(error) {
@@ -586,22 +662,120 @@
 
         function resetPassword() {
             var email = $('#forgotEmail').val()
-            console.log(email);
+            // console.log(email);
+            if(email){
+                let r = Math.random().toString(30).substring(5);
+            // console.log("random", r);
+
+            localStorage.setItem("req", r);
+            localStorage.setItem("user", email);
+
+            var template_params = {
+            "reply_to": email,
+            "from_name": "VerkoMarketing",
+            "to_name": "",
+            "message_html": r
+            }
+
+            var service_id = "default_service";
+            var template_id = "template_dmptYqbt";
+            emailjs.send(service_id, template_id, template_params);
+
+            document.getElementById("messages3").innerHTML = "A reset password sent to your email address. It will expire after 2 hours.";
+
+            setTimeout(function(){ 
+                $('#forgotStyle').hide();
+                $('#changePass').show(); 
+            },7000);
+            } else {
+                document.getElementById("messages3").innerHTML = "Enter your email address in order to request!";
+            }
+
+            
 
 
-            firebase.auth().sendPasswordResetEmail(email).then(function() {
-                    // $scope.user.resetEmail = "";
-                    // $scope.authError = 'A reset link sent to your email address. It will expire after 2 hours.';
-                    document.getElementById("messages3").innerHTML = "A reset link sent to your email address. It will expire after 2 hours.";
-                    console.log('A reset link sent to your email address. It will expire after 2 hours.');
-                    document.getElementById("forgotEmail").innerHTML = " ";
-                })
-                .catch(function(error) {
-                    // $scope.authError = true;
-                    // $scope.authError = error.message;
-                    console.log(error);
-                    document.getElementById("messages3").innerHTML = error.message;
+            // firebase.auth().sendPasswordResetEmail(email).then(function() {
+            //         // $scope.user.resetEmail = "";
+            //         // $scope.authError = 'A reset link sent to your email address. It will expire after 2 hours.';
+            //         document.getElementById("messages3").innerHTML = "A reset link sent to your email address. It will expire after 2 hours.";
+            //         console.log('A reset link sent to your email address. It will expire after 2 hours.');
+            //         document.getElementById("forgotEmail").innerHTML = " ";
+            //     })
+            //     .catch(function(error) {
+            //         // $scope.authError = true;
+            //         // $scope.authError = error.message;
+            //         console.log(error);
+            //         document.getElementById("messages3").innerHTML = error.message;
+            //     });
+
+        }
+
+        function changePass() {
+            var req = $('#reqPassword').val();
+            var newPass = $('#newPassword').val();
+            var confirmPass = $('#confirmPassword').val();
+            var user = localStorage.getItem('user');
+            var lsrole;
+            if(localStorage.getItem('req') == req){
+                if(newPass == confirmPass){
+                    // console.log("Success!");
+                    document.getElementById("success4").innerHTML = "Success!";
+                    var settings = {
+                    "url": "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/users/" + user,
+                    "method": "GET",
+                    "timeout": 0,
+                    };
+                    $.ajax(settings).done(function (response) {
+                        if(response.role == "ordinary"){
+                        lsrole = 1;
+                    } else if(response.role == "admin"){
+                        lsrole = 2;
+                    }
+
+                    if(response.username && response.password && response.role){
+
+                    var myData = JSON.stringify({
+
+                    "username": user,
+                    "password": Base64.encode(newPass),
+                    "role": response.role
+
                 });
+                console.log(myData);
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    // url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/adcounts/{domain}",
+                    url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/users/{username}",
+                    data: myData,
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        sessionStorage.setItem("state", 1);
+                        sessionStorage.setItem("role", lsrole);
+                        // $('#registerStyle').hide();
+                        // $('#forgotStyle').hide();
+                        // $('#loginStyle').show();
+                        window.location.href = './index.html';
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+                  
+                    }
+                        
+
+                    });
+                } else {
+                    document.getElementById("messages4").innerHTML = "Your password doesn't match";
+                }
+            } else {
+                document.getElementById("messages4").innerHTML = "Your requested password doesn't match";
+            }
+            
 
         }
     </script>
