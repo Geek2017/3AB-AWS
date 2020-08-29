@@ -2,7 +2,7 @@ new jmbotdetector({
     timeout: 5000,
     callback: function(result) {
 
-        console.log('result:', result.tests)
+        console.log('result:', result.cases)
 
         $.getJSON("../js/data.json", function(data) {
             console.log(data.bot);
@@ -11,28 +11,42 @@ new jmbotdetector({
             var human = data.human;
             var bot = data.bot;
 
+            var currentUrl = window.location.hostname;
+
+            console.log(currentUrl);
+
+            var today = new Date();
+
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+            var datetime = today + '/' + time;
+
             if (result.cases.mousemove) {
 
-                var currentUrl = window.location.hostname;
-                console.log(currentUrl);
+                var myData = JSON.stringify({
 
-                var today = new Date();
-                var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                    "datetime": datetime,
+                    "url": currentUrl,
+                    "events": result.cases
 
-                var datetime = today + '/' + time;
+                });
+                console.log(myData);
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/human/{id}",
+                    data: myData,
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    success: function(data) {
+                        console.log(data);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
 
-                var uid = firebase.database().ref().child('users').push().key;
-
-                var data = {
-                    'datetime': datetime,
-                    'events': result.cases,
-                    'url': currentUrl
-
-                };
-
-                var updates = {};
-                updates['/datasets/human/' + uid] = data;
-                firebase.database().ref().update(updates, console.log('Human Events Click Save!'));
                 setTimeout(function() {
 
                     console.log('MOUSEMOVE', result.cases.mousemove)
@@ -43,26 +57,31 @@ new jmbotdetector({
                 }, 3000);
 
             } else {
-                var currentUrl = window.location.hostname;
-                console.log(currentUrl);
 
-                var today = new Date();
-                var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                var myData = JSON.stringify({
 
-                var datetime = today + '/' + time;
+                    "datetime": datetime,
+                    "url": currentUrl,
+                    "events": result.cases
 
-                var uid = firebase.database().ref().child('users').push().key;
+                });
+                console.log(myData);
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/bot/{id}",
+                    data: myData,
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    success: function(data) {
+                        console.log(data);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
 
-                var data = {
-                    'datetime': datetime,
-                    'events': result.cases,
-                    'url': currentUrl
-
-                };
-
-                var updates = {};
-                updates['/datasets/bot/' + uid] = data;
-                firebase.database().ref().update(updates, console.log('Bot Events Click Save!'));
                 setTimeout(function() {
 
                     localStorage.setItem('adsurl', bot)

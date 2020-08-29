@@ -13,7 +13,7 @@
     <input type="text" id="user" /><br>
     <input type="password" id="pwd" minlength="10" /><br>
     <button id="encode">Enco</button>
-    <button id="decode">Deco</button>
+    <button id="decode">Deco</button>ß
     <button id="save">Save</button>
     <p id="output"></p>
 
@@ -173,19 +173,19 @@
         const username = $('#user').val();
 
         var settings = {
-  "url": "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/users/" + username,
-  "method": "GET",
-  "timeout": 0,
-};
-$.ajax(settings).done(function (response) {
-    if(response.username && response.password && response.role){
-        console.log(Base64.decode(response.password));
-        // Base64.decode(response.password);
-    } else {
-        console.log("Error");
-    }
-  
-});
+            "url": "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/users/" + username,
+            "method": "GET",
+            "timeout": 0,
+        };
+        $.ajax(settings).done(function(response) {
+            if (response.username && response.password && response.role) {
+                console.log(Base64.decode(response.password));
+                // Base64.decode(response.password);
+            } else {
+                console.log("Error");
+            }
+
+        });
 
         // var myData = JSON.stringify({
 
