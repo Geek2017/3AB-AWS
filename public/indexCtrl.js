@@ -3,6 +3,6 @@
 
 angular.module('newApp').controller('indexCtrl', function($scope) {
 
-    alert('index')
+    console.log("asdhasdjash")
 
 });

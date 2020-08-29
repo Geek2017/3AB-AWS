@@ -21,7 +21,7 @@ angular.module('newApp').controller('DashboardCtrl', function($scope) {
             $("#AI1").show();
             $("#AI2").show();
             $("#AI3").show();
-            $("#events").show();
+            // $("#events").show();
         }
 
         // ref.orderByChild("role").once("value")

@@ -56,7 +56,7 @@
     <!-- <script src="./bower_components/angularfire/dist/angularfire.js"></script> -->
     <!-- Firebase -->
     <!-- <script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script> -->
-    <script>
+    <script defer>
         // var config = {
         //     apiKey: "AIzaSyA-fqW8NmUfA6YIMMJ-HLRuTVRJtC7b6mw",
         //     authDomain: "geocoord-1532713040637.firebaseapp.com",
@@ -66,23 +66,38 @@
 
 
         // firebase.initializeApp(config);
+        // let state = sessionStorage.getItem('state');
+        // let role = sessionStorage.getItem('role'); 
+        // let isAdmin = false;
+        // // if(state == 1 && role == 1){
+        // //     $("#ai").hide();
+        // //     $("#logs").hide();
+        // //     $("#settings").hide();
+        // //     // if(role== 1){
+        // //     //     // console.log("1");
+                
+        // //     // } else if(role == 2){
+        // //     //     // console.log("2");
+                
+        // //     // }
+        // // } else if(state == 1 && role == 2) {
+        // //     $("#ai").show();
+        // //     $("#logs").hide();
+        // //     $("#settings").show();
+        // // } else {
+        // //     window.location.href = './login.html';
+        // // }
 
-        if(sessionStorage.getItem('state') == 1){
-            if(sessionStorage.getItem('role') == 1){
-                // console.log("1");
-                $("#ai").hide();
-                $("#logs").hide();
-                $("#settings").hide();
-            } else if(sessionStorage.getItem('role') == 2){
-                // console.log("2");
-                $("#ai").show();
-                $("#logs").show();
-                $("#settings").show();
-            }
-        } else {
-            window.location.href = './login.html';
-        }
-
+        // if(state == 1) {
+        //     if(role == 2) {
+        //         isAdmin = true;
+        //     } else {
+        //         isAdmin = false;
+        //     }
+        // }else {
+        //     window.location.href = './login.html';
+        // }
+        // console.log(isAdmin);
 
         // var ref = firebase.database().ref("datasets/users");
         // firebase.auth().onAuthStateChanged(function(user) {
@@ -263,7 +278,7 @@
 
                             </ul>
                         </li>
-                        <li style="display: block;" class="nav-item has-treeview" id="ai">
+                        <li id="ai" class="nav-item has-treeview">
                             <a class="nav-link">
                                 <i class="nav-icon fas fa-fingerprint"></i>
                                 <p>
@@ -296,7 +311,7 @@
 
                             </ul>
                         </li>
-                        <li style="display: block;" class="nav-item has-treeview" id="logs">
+                        <li class="nav-item has-treeview" id="logs">
                             <a href="#/eventslog" class="nav-link">
                                 <i class="nav-icon fas fa-clipboard-list"></i>
                                 <p>
@@ -304,7 +319,7 @@
                                 </p>
                             </a>
                         </li>
-                        <li style="display: block;" class="nav-item" id="settings">
+                        <li id="settings" class="nav-item">
                             <a href="#/settings" class="nav-link">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
@@ -380,9 +395,30 @@
     <script src="controllers/SettingsCtrl.js"></script>
 
     <script>
+        let state = sessionStorage.getItem('state');
+        let role = sessionStorage.getItem('role'); 
+        let isAdmin = false;
+
+        if(state == 1) {
+            if(role == 2) {
+            $("#ai").show();
+            $("#logs").hide();
+            $("#settings").show();
+            } else {
+            $("#ai").hide();
+            $("#logs").hide();
+            $("#settings").hide();
+            }
+        }else {
+            window.location.href = './login.html';
+        }
+        // console.log(isAdmin);
+
         function signout() {
             window.localStorage.removeItem("username");
             sessionStorage.clear();
+            window.localStorage.removeItem("req");
+            window.localStorage.removeItem("user");
             console.log("Logged out!");
             window.location.href = './index.html';
             // firebase.auth().signOut().then(function() {
