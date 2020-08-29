@@ -395,6 +395,20 @@
     <script src="controllers/SettingsCtrl.js"></script>
 
     <script>
+
+        var user = sessionStorage.getItem("user");
+
+        var settings = {
+        "url": "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/users/" + user,
+        "method": "GET",
+        "timeout": 0,
+        };
+        $.ajax(settings).done(function (response) {
+        // var user = response.username;
+        document.getElementById("username").innerHTML = user;
+        });
+
+
         let state = sessionStorage.getItem('state');
         let role = sessionStorage.getItem('role'); 
         let isAdmin = false;

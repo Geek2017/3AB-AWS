@@ -538,6 +538,7 @@
                     "timeout": 0,
                     };
                     $.ajax(settings).done(function (response) {
+                    var user = response.username;
                     if(response.username && response.password && response.role){
                     // console.log(Base64.decode(response.password));
                     var lsrole = 0;
@@ -552,6 +553,7 @@
                     }
                     if (signInPwd == decodedPwd){
                         sessionStorage.setItem("state", 1);
+                        sessionStorage.setItem("user", user);
                         sessionStorage.setItem("role", lsrole);
                         console.log("You're in!");
                         window.location.href = './index.html';

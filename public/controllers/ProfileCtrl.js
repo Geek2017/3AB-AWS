@@ -1,7 +1,21 @@
 'use strict';
 
 
-angular.module('newApp').controller('ProfileCtrl', function($firebaseArray, $scope) {
+angular.module('newApp').controller('ProfileCtrl', function($scope) {
+
+    var user = sessionStorage.getItem("user");
+
+        var settings = {
+        "url": "https://pq38i6wtd4.execute-api.ap-southeast-1.amazonaws.com/verkoapi/users/" + user,
+        "method": "GET",
+        "timeout": 0,
+        };
+        $.ajax(settings).done(function (response) {
+        // var user = response.username;
+        document.getElementById("username2").innerHTML = user;
+        document.getElementById("role2").innerHTML = response.role;
+        });
+
     // var modal = document.getElementById('myModal');
     // $("#close2").click(function() {
     //     modal.style.display = "none";
